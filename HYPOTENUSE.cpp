@@ -28,7 +28,7 @@ public:
         return HYPOTENUSE;
     }
     // Function to make a triangle based on the user input values
-    void decorate()
+    void printTriangle()
     {
         // Decorators
         for (int i = 1; i <= HEIGHT; ++i)
