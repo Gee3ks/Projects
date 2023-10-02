@@ -13,12 +13,12 @@ private:
 
 public:
     // Class Constructor
-    // Initialized values to zero.
+    // Initialize values to zero.
     Triangle() : BASE(0), HEIGHT(0), HYPOTENUSE(0) {}
 
     // class Methods
 
-    // Function to solve for Hypotenuse if the triangle
+    // Function to solve for Hypotenuse
     double getH(double _base, double _height)
     {
 
