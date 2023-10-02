@@ -122,55 +122,25 @@ public:
         double totalBill;
 
         // Extract hours and minutes from _time
-        int toInt = stoi(_time.substr(0, 2));
-        int toInt1 = stoi(_time.substr(3, 2));
+        int startTimeHr = stoi(_time.substr(0, 2));
+        int startTimeMn = stoi(_time.substr(3, 2));
 
-        // Calculate the total duration in minutes
-        int totalDur = callDuration + toInt1;
+        // Calculate end time
+        int endTimeHr = startTimeHr;
+        int endTimeMn = startTimeMn + callDuration;
 
-        // Calculate the total time gap in hours
-        int totalTimeGap = toInt + callDuration;
-        string timeFormat = "";
-
-        if (toInt >= 1 && toInt <= 12)
+        // Adjust end time if it exceeds 60 minutes
+        if (endTimeMn >= 60)
         {
-            timeFormat = " AM";
-        }
-        else if (toInt >= 12 && toInt < 24)
-        {
-            timeFormat = " PM";
-        }
-        else if (toInt > 24)
-        {
-            toInt -= 12;
-            timeFormat = " AM";
+            endTimeHr += endTimeMn / 60;
+            endTimeMn %= 60;
         }
 
-        // Calculate the new end time
-        int newHours = toInt + (callDuration / 60);
-        int newMinutes = toInt1 + (callDuration % 60);
+        // Calculate the total minutes for billing
+        totalMinutes = (endTimeHr - startTimeHr) * 60 + (endTimeMn - startTimeMn);
 
-        int endTimeHr = toInt;
-        int endTimeMn = toInt1;
-
-        if (callDuration == 60)
-        {
-            endTimeHr += 1;
-        }
-        else if (callDuration < 60 || callDuration > 60)
-        {
-            endTimeHr += 1;
-            endTimeMn = ((callDuration + toInt1) % 60);
-        }
-
-        // if (newMinutes >= 60)
-        // {
-        //     newHours += 1;
-        //     newMinutes -= 60;
-        // }
-
-        // Convert call duration to minutes
-        int toMinutes = callDuration;
+        // Calculate total bill based on totalMinutes and any billing logic
+        // Example: totalBill = totalMinutes * rate;
 
         // Message for printing the results
         string processMessage = "\n***** SHOWING RESULTS ****";
@@ -181,21 +151,21 @@ public:
         case 'T':
         case 'W':
         case 'F':
-            if (toInt >= 8 && toInt <= 18)
+            if (startTimeHr >= 8 && startTimeHr <= 18)
             {
                 appliedPrice = " 0.40$/min";
-                totalBill = toMinutes * 0.40;
+                totalBill = callDuration * 0.40;
                 break;
             }
-            else if ((toInt >= 1 && toInt < 8) || (toInt > 18 && toInt < 24))
+            else if ((startTimeHr >= 1 && startTimeHr < 8) || (startTimeHr > 18 && startTimeHr < 24))
             {
                 appliedPrice = " 0.25$/min";
-                totalBill = toMinutes * 0.25;
+                totalBill = callDuration * 0.25;
                 break;
             }
         case 'S':
             appliedPrice = " 0.15$/min";
-            totalBill = toMinutes * 0.15;
+            totalBill = callDuration * 0.15;
             break;
         }
 
@@ -203,9 +173,9 @@ public:
         cout << "\n\nDay: " << _day1;
         cout << "\n\nApplied:" << appliedPrice;
         cout << "\n\nCall Duration: " << callDuration << " Minutes.";
-        cout << "\n\nFrom: " << _time << timeFormat;
+        cout << "\n\nFrom: " << _time;
         cout << " - " << (endTimeHr < 10 ? "0" : "") << endTimeHr << ":"
-             << (endTimeMn < 10 ? "0" : "") << endTimeMn << timeFormat;
+             << (endTimeMn < 10 ? "0" : "") << endTimeMn;
         cout << "\n\nTotal Bill: " << totalBill << "$" << '\n';
         cout << "\n\n**********************";
     }
