@@ -71,7 +71,7 @@ int main()
         // Triangle Class Instance
         Triangle t1;
         t1.getH(base, height); // Access Triangle Class Method
-        t1.decorate();
+        t1.printTriangle();
 
         // Prompt user if they want to continue the program (y/n).
         cout << "\nDo you want to continue? (y/n): ";
