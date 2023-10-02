@@ -56,7 +56,7 @@ public:
 };
 
 // Main funtion
-int main()
+int main(void)
 {
     // Variable for the program to run
     char repeat;
