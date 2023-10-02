@@ -19,7 +19,7 @@ public:
     }
 };
 
-int main()
+int main(void)
 {
     Crud crud;
     while (true)
