@@ -28,7 +28,6 @@ int fibonacci(int number)
     {
         return 1 * (number == 1);
     }
-    cout << number << endl;
     return fibonacci(number - 1) + fibonacci(number - 2);
 }
 
