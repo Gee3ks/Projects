@@ -7,55 +7,45 @@ using namespace std;
 class TelePhoneBill
 {
 private:
-    string _time;
-    int callDuration;
-    string _day, _day1;
-    vector<string> daysInTheWeek = {"MO", "TU", "WE", "TH", "FR", "SA", "SU"};
+    string _TIME;
+    int CALL_DURATION;
+    string _DAY, _DAY1;
+    vector<string> DAYS_IN_THE_WEEK = {"MO", "TU", "WE", "TH", "FR", "SA", "SU"};
 
 public:
     bool getUserInput()
     {
-        bool isDayFound = false; // Initialize isDayFound
+        // bool isDayFound = false; // Initialize isDayFound
 
         while (true)
         {
             cout << "\nEnter the Day the Call was made: (Mo - Su): ";
 
-            if (cin >> _day)
+            if (cin >> _DAY)
             {
                 // Convert input to uppercase
-                for (char &c : _day)
+                for (char &c : _DAY)
                 {
                     c = toupper(c);
                 }
 
                 // Check if the day is valid
-                for (const string &word : daysInTheWeek)
+                for (const string &word : DAYS_IN_THE_WEEK)
                 {
                     // compare the first two letters in user input string
-                    if (_day.substr(0, 2) == word)
+                    if (_DAY.substr(0, 2) == word)
                     {
-                        isDayFound = true;
-                        _day1 = word;
-                        break;
+
+                        _DAY1 = word;
+                        return true;
                     }
                 }
+                cerr << "\nInvalid day! | ";
+            }
 
-                if (isDayFound)
-                {
-                    return true;
-                }
-                else
-                {
-                    cerr << "Invalid day. Please try again." << endl;
-                }
-            }
-            else
-            {
-                cerr << "Invalid Input!" << '\n';
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            }
+            cerr << "Invalid Input!\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
     }
 
@@ -64,31 +54,28 @@ public:
         while (true)
         {
             cout << "\nCall Start Time: (HH:MM): ";
-            if (cin >> _time)
+            if (cin >> _TIME)
             {
-                if (_time.length() == 5 && _time[2] == ':' &&
-                    (isdigit(_time[0]) && isdigit(_time[1])) &&
+                if (_TIME.length() == 5 && _TIME[2] == ':' &&
+                    (isdigit(_TIME[0]) && isdigit(_TIME[1])) &&
 
-                    (isdigit(_time[3]) && isdigit(_time[4])))
+                    (isdigit(_TIME[3]) && isdigit(_TIME[4])))
                 {
 
-                    int hours = stoi(_time.substr(0, 2));
-                    int minutes = stoi(_time.substr(3, 5));
+                    int hours = stoi(_TIME.substr(0, 2));
+                    int minutes = stoi(_TIME.substr(3, 5));
 
                     if (hours >= 0 && hours <= 24 && minutes >= 0 && minutes <= 60)
                     {
                         return true;
                     }
                 }
-                cerr << "\nInvalid Format!";
-                cerr << "\n24:60\n";
+                cerr << "\nInvalid Format! (HH:MM) | ";
             }
-            else
-            {
-                cerr << "\nInvalid Input!";
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            }
+
+            cerr << "Invalid Input!\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
     }
 
@@ -98,20 +85,13 @@ public:
         while (true)
         {
             cout << "\nCall Duration in Minutes: ";
-            if (cin >> callDuration)
+            if (cin >> CALL_DURATION && CALL_DURATION != 0)
             {
-                if (callDuration < 1)
-                {
-                    cerr << "\nInvalid!";
-                }
                 return true;
             }
-            else
-            {
-                cerr << "\nInvalid Input!";
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            }
+            cerr << "\nInvalid Input!";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
     }
 
@@ -122,12 +102,12 @@ public:
         double totalBill;
 
         // Extract hours and minutes from _time
-        int startTimeHr = stoi(_time.substr(0, 2));
-        int startTimeMn = stoi(_time.substr(3, 2));
+        int startTimeHr = stoi(_TIME.substr(0, 2));
+        int startTimeMn = stoi(_TIME.substr(3, 2));
 
         // Calculate end time
         int endTimeHr = startTimeHr;
-        int endTimeMn = startTimeMn + callDuration;
+        int endTimeMn = startTimeMn + CALL_DURATION;
 
         // Adjust end time if it exceeds 60 minutes
         if (endTimeMn >= 60)
@@ -145,7 +125,7 @@ public:
         // Message for printing the results
         string processMessage = "\n***** SHOWING RESULTS ****";
         string appliedPrice = "";
-        switch (_day[0]) // "monday "
+        switch (_DAY[0]) // "monday "
         {
         case 'M':
         case 'T':
@@ -154,26 +134,26 @@ public:
             if (startTimeHr >= 8 && startTimeHr <= 18)
             {
                 appliedPrice = " 0.40$/min";
-                totalBill = callDuration * 0.40;
+                totalBill = CALL_DURATION * 0.40;
                 break;
             }
             else if ((startTimeHr >= 1 && startTimeHr < 8) || (startTimeHr > 18 && startTimeHr < 24))
             {
                 appliedPrice = " 0.25$/min";
-                totalBill = callDuration * 0.25;
+                totalBill = CALL_DURATION * 0.25;
                 break;
             }
         case 'S':
             appliedPrice = " 0.15$/min";
-            totalBill = callDuration * 0.15;
+            totalBill = CALL_DURATION * 0.15;
             break;
         }
 
         cout << processMessage;
-        cout << "\n\nDay: " << _day1;
+        cout << "\n\nDay: " << _DAY1;
         cout << "\n\nApplied:" << appliedPrice;
-        cout << "\n\nCall Duration: " << callDuration << " Minutes.";
-        cout << "\n\nFrom: " << _time;
+        cout << "\n\nCall Duration: " << CALL_DURATION << " Minutes.";
+        cout << "\n\nFrom: " << _TIME;
         cout << " - " << (endTimeHr < 10 ? "0" : "") << endTimeHr << ":"
              << (endTimeMn < 10 ? "0" : "") << endTimeMn;
         cout << "\n\nTotal Bill: " << totalBill << "$" << '\n';
@@ -195,48 +175,29 @@ public:
     }
 };
 
+bool repeat(string prompt)
+{
+    string repeat = "";
+    do
+    {
+
+        cout << prompt;
+        cin >> repeat;
+
+    } while (repeat != "y" && repeat != "n");
+    return repeat == "y";
+}
+
 int main()
 {
-    // collection of valid inputs
-    char validChoices[2] = {'Y', 'N'};
     // class instance
     TelePhoneBill tel;
 
-    while (true)
+    do
     {
-        cout << "\nDo you want to continue? (y/n): ";
-        char choice;
-        cin >> choice;
+        tel.runProcess();
 
-        // transform user char input to uppercase
-        choice = toupper(choice);
-
-        // variable for the loop to run
-        bool isChoiceValid = false;
-        for (char &c : validChoices)
-        {
-            if (c == choice)
-            {
-                isChoiceValid = true;
-                if (choice == 'Y')
-                {
-                    tel.runProcess(); //
-                }
-                else if (choice == 'N')
-                {
-                    cout << "\nThank You for using! (r) Group 3!";
-                    cout << "\nExiting Program.";
-                    return 0;
-                }
-            }
-        }
-
-        if (!isChoiceValid)
-        {
-            cerr << "\nInvalid Choice!";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-    }
+    } while (repeat("\nDo you want to calculate another call? (y/n): "));
+    cout << "\nExiting Program.";
     return 0;
 }
