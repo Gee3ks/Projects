@@ -167,7 +167,7 @@ public:
         cout << "\nWeek day | Mon - Fri (Before 8 am or After 6PM) = .25$/min";
         cout << "\nWeekends | Sat - Sun (Any time of the Day) = .25$/min";
         cout << "\n_____________________________________________\n";
-        // encapsulated the functions
+        // Encapsulate Functions / Class Methods
         getUserInput();
         parseTime();
         getDuration();
